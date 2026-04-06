@@ -477,9 +477,9 @@ section p {
 
 .rps-table {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
   gap: 1rem;
-  align-items: center;
+  align-items: stretch;
 }
 
 .rps-player-panel h3,
@@ -492,7 +492,8 @@ section p {
 
 .card-hand {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(82px, 110px));
+  justify-content: center;
   gap: 0.7rem;
 }
 
@@ -553,6 +554,12 @@ section p {
   padding: 0.9rem;
 }
 
+.rps-player-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .rps-arena {
   display: flex;
   flex-direction: column;
@@ -562,9 +569,9 @@ section p {
 }
 
 .duel-cards {
-  width: min(560px, 100%);
+  width: min(460px, 100%);
   display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 180px));
+  grid-template-columns: repeat(2, minmax(96px, 145px));
   justify-content: center;
   gap: 0.9rem;
   margin-bottom: 0.85rem;
@@ -593,7 +600,7 @@ section p {
 .round-result {
   margin: 0.2rem 0 0.25rem;
   min-height: 1.6em;
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--beetroot);
 }
@@ -601,7 +608,7 @@ section p {
 .round-note {
   margin-top: 0;
   margin-bottom: 0.85rem;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .rps-restart,
@@ -785,6 +792,26 @@ section p {
   }
 
   .card-hand {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(78px, 1fr));
+    gap: 0.55rem;
+  }
+
+  .duel-cards {
+    width: min(330px, 100%);
+    grid-template-columns: repeat(2, minmax(92px, 120px));
+    gap: 0.7rem;
+  }
+
+  .choice-label {
+    left: 0.35rem;
+    bottom: 0.35rem;
+    padding: 0.12rem 0.45rem;
+    font-size: 0.74rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .rps-table {
+    grid-template-columns: 1fr;
   }
 }
