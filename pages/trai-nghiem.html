@@ -21,9 +21,69 @@
     </header>
 
     <main class="container page-main">
-      <section>
-        <h2>Trải nghiệm</h2>
-        <p>Đây là khung cho trang Trải nghiệm. Bạn có thể thêm hình ảnh, video, hoặc khu vực tương tác.</p>
+      <section class="rps-section" data-rps-game>
+        <div class="rps-heading">
+          <h2>Oẳn Tù Tì - Rút Thẻ Bài</h2>
+          <p>Chọn 1 thẻ. Ai thắng đủ 3 hiệp trước sẽ thắng chung cuộc.</p>
+        </div>
+
+        <div class="rps-scoreboard" aria-live="polite">
+          <div class="score-item">
+            <span>Bạn</span>
+            <strong id="player-score">0</strong>
+          </div>
+          <div class="score-item">
+            <span>Máy</span>
+            <strong id="cpu-score">0</strong>
+          </div>
+          <div class="score-item">
+            <span>Hiệp hòa</span>
+            <strong id="draw-score">0</strong>
+          </div>
+        </div>
+
+        <div class="rps-table">
+          <div class="rps-arena" aria-live="polite">
+            <p class="duel-label">So găng</p>
+            <div class="duel-cards">
+              <div class="duel-card duel-card--cpu" id="duel-cpu-wrap">
+                <img id="duel-cpu-card" src="../oan tu xi/card_back.png" alt="Thẻ của máy ở khu so găng" />
+              </div>
+              <div class="duel-card duel-card--user" id="duel-user-wrap">
+                <img id="duel-user-card" src="../oan tu xi/card_back.png" alt="Thẻ của bạn ở khu so găng" />
+              </div>
+            </div>
+            <p class="round-result" id="round-result">Hãy chọn thẻ để bắt đầu trận đấu.</p>
+            <p class="round-note" id="round-note">Bạn cần thắng 3 hiệp để chiến thắng.</p>
+            <button type="button" class="rps-restart" id="restart-round">Chơi lại từ đầu</button>
+          </div>
+
+          <div class="rps-player-panel">
+            <h3>Thẻ của bạn</h3>
+            <div class="card-hand" id="player-hand">
+              <button class="choice-card" type="button" data-choice="keo" aria-label="Chọn Kéo">
+                <img src="../oan tu xi/keo.png" alt="Thẻ Kéo" />
+                <span class="choice-label">Kéo</span>
+              </button>
+              <button class="choice-card" type="button" data-choice="bua" aria-label="Chọn Búa">
+                <img src="../oan tu xi/bua.png" alt="Thẻ Búa" />
+                <span class="choice-label">Búa</span>
+              </button>
+              <button class="choice-card" type="button" data-choice="bao" aria-label="Chọn Bao">
+                <img src="../oan tu xi/bao.png" alt="Thẻ Bao" />
+                <span class="choice-label">Bao</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-overlay" id="game-overlay" hidden>
+          <div class="game-overlay__dialog">
+            <h3 id="game-over-title">Kết thúc trận</h3>
+            <p id="game-over-message"></p>
+            <button type="button" id="play-again">Chơi lại</button>
+          </div>
+        </div>
       </section>
     </main>
 

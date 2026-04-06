@@ -1,10 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
+function initRulesCarousel() {
   const carousel = document.querySelector("[data-rules-carousel]");
   const track = document.querySelector("[data-rules-track]");
   const modal = document.querySelector("[data-rule-modal]");
 
   if (!track || !modal) {
-    console.log("Dan Gian frontend scaffold loaded.");
     return;
   }
 
@@ -206,4 +205,213 @@ document.addEventListener("DOMContentLoaded", function () {
       swiper.slideTo(1, 0);
     });
   }
+}
+
+function initOanTuTiGame() {
+  const game = document.querySelector("[data-rps-game]");
+
+  if (!game) {
+    return;
+  }
+
+  const playerScoreEl = document.getElementById("player-score");
+  const cpuScoreEl = document.getElementById("cpu-score");
+  const drawScoreEl = document.getElementById("draw-score");
+  const roundResultEl = document.getElementById("round-result");
+  const roundNoteEl = document.getElementById("round-note");
+
+  const duelUserCardEl = document.getElementById("duel-user-card");
+  const duelCpuCardEl = document.getElementById("duel-cpu-card");
+  const duelUserWrap = document.getElementById("duel-user-wrap");
+  const duelCpuWrap = document.getElementById("duel-cpu-wrap");
+
+  const restartBtn = document.getElementById("restart-round");
+  const overlay = document.getElementById("game-overlay");
+  const playAgainBtn = document.getElementById("play-again");
+  const gameOverTitle = document.getElementById("game-over-title");
+  const gameOverMessage = document.getElementById("game-over-message");
+
+  const playerCards = Array.from(game.querySelectorAll(".choice-card"));
+  const cardBack = "../oan tu xi/card_back.png";
+  const cardByChoice = {
+    keo: "../oan tu xi/keo.png",
+    bua: "../oan tu xi/bua.png",
+    bao: "../oan tu xi/bao.png",
+  };
+
+  const choiceLabel = {
+    keo: "Kéo",
+    bua: "Búa",
+    bao: "Bao",
+  };
+
+  const winAgainst = {
+    keo: "bao",
+    bua: "keo",
+    bao: "bua",
+  };
+
+  const CPU_REVEAL_DELAY_MS = 600;
+  const ROUND_RESET_DELAY_MS = 900;
+
+  let playerScore = 0;
+  let cpuScore = 0;
+  let drawScore = 0;
+  let isRoundLocked = false;
+  let isGameOver = false;
+
+  function randomChoice() {
+    const choices = Object.keys(cardByChoice);
+    return choices[Math.floor(Math.random() * choices.length)];
+  }
+
+  function setAllCardsBack() {
+    playerCards.forEach((btn) => {
+      const choice = btn.dataset.choice;
+      const img = btn.querySelector("img");
+      img.src = cardByChoice[choice];
+      btn.classList.remove("is-selected");
+    });
+    duelUserCardEl.src = cardBack;
+    duelCpuCardEl.src = cardBack;
+  }
+
+  function updateScoreUI() {
+    playerScoreEl.textContent = String(playerScore);
+    cpuScoreEl.textContent = String(cpuScore);
+    drawScoreEl.textContent = String(drawScore);
+  }
+
+  function setCardsDisabled(disabled) {
+    playerCards.forEach((btn) => {
+      btn.disabled = disabled;
+    });
+  }
+
+  function revealPlayerCards(selectedChoice) {
+    playerCards.forEach((btn) => {
+      const choice = btn.dataset.choice;
+      const img = btn.querySelector("img");
+      img.src = cardByChoice[choice];
+      btn.classList.toggle("is-selected", choice === selectedChoice);
+    });
+  }
+
+  function runDuelAnimation() {
+    duelUserWrap.classList.remove("is-fighting");
+    duelCpuWrap.classList.remove("is-fighting");
+    duelCpuWrap.classList.remove("is-thrown");
+
+    void duelUserWrap.offsetWidth;
+    void duelCpuWrap.offsetWidth;
+
+    duelCpuWrap.classList.add("is-thrown");
+    duelUserWrap.classList.add("is-fighting");
+    duelCpuWrap.classList.add("is-fighting");
+  }
+
+  function getRoundOutcome(playerChoice, cpuChoice) {
+    if (playerChoice === cpuChoice) {
+      return "draw";
+    }
+
+    return winAgainst[playerChoice] === cpuChoice ? "player" : "cpu";
+  }
+
+  function showGameOver() {
+    isGameOver = true;
+    setCardsDisabled(true);
+
+    if (playerScore >= 3) {
+      gameOverTitle.textContent = "Chúc mừng bạn!";
+      gameOverMessage.textContent = "Bạn đã thắng chung cuộc với 3 hiệp thắng.";
+    } else {
+      gameOverTitle.textContent = "Rất tiếc!";
+      gameOverMessage.textContent = "Máy đã thắng chung cuộc. Hãy thử lại nhé.";
+    }
+
+    overlay.hidden = false;
+  }
+
+  function resetGame() {
+    playerScore = 0;
+    cpuScore = 0;
+    drawScore = 0;
+    isRoundLocked = false;
+    isGameOver = false;
+    overlay.hidden = true;
+
+    updateScoreUI();
+    setAllCardsBack();
+    setCardsDisabled(false);
+
+    roundResultEl.textContent = "Hãy chọn thẻ để bắt đầu trận đấu.";
+    roundNoteEl.textContent = "Bạn cần thắng 3 hiệp để chiến thắng.";
+  }
+
+  function playRound(playerChoice, selectedButton) {
+    if (isRoundLocked || isGameOver) {
+      return;
+    }
+
+    isRoundLocked = true;
+    setCardsDisabled(true);
+
+    revealPlayerCards(playerChoice);
+    roundNoteEl.textContent = `Bạn đã chọn: ${choiceLabel[playerChoice]}. Đang chờ máy ra thẻ...`;
+
+    const cpuChoice = randomChoice();
+    duelUserCardEl.src = cardByChoice[playerChoice];
+    duelCpuCardEl.src = cardByChoice[cpuChoice];
+    selectedButton.classList.add("is-selected");
+
+    runDuelAnimation();
+
+    window.setTimeout(() => {
+      const outcome = getRoundOutcome(playerChoice, cpuChoice);
+
+      if (outcome === "player") {
+        playerScore += 1;
+        roundResultEl.textContent = `Bạn thắng hiệp này! ${choiceLabel[playerChoice]} thắng ${choiceLabel[cpuChoice]}.`;
+      } else if (outcome === "cpu") {
+        cpuScore += 1;
+        roundResultEl.textContent = `Máy thắng hiệp này! ${choiceLabel[cpuChoice]} thắng ${choiceLabel[playerChoice]}.`;
+      } else {
+        drawScore += 1;
+        roundResultEl.textContent = `Hòa hiệp! Cả hai cùng ra ${choiceLabel[playerChoice]}.`;
+      }
+
+      updateScoreUI();
+      roundNoteEl.textContent = `Tỉ số hiện tại: Bạn ${playerScore} - ${cpuScore} Máy.`;
+
+      if (playerScore >= 3 || cpuScore >= 3) {
+        showGameOver();
+        isRoundLocked = false;
+        return;
+      }
+
+      window.setTimeout(() => {
+        setAllCardsBack();
+        setCardsDisabled(false);
+        isRoundLocked = false;
+      }, ROUND_RESET_DELAY_MS);
+    }, CPU_REVEAL_DELAY_MS);
+  }
+
+  playerCards.forEach((button) => {
+    button.addEventListener("click", () => {
+      const playerChoice = button.dataset.choice;
+      playRound(playerChoice, button);
+    });
+  });
+
+  restartBtn.addEventListener("click", resetGame);
+  playAgainBtn.addEventListener("click", resetGame);
+
+  resetGame();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  initRulesCarousel();
+  initOanTuTiGame();
 });
