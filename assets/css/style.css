@@ -172,7 +172,7 @@ section {
 section h2 {
   margin-top: 0;
   margin-bottom: 0.75rem;
-  color: var(--beetroot);
+  color: #ff692e;
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 3vw, 2.6rem);
   line-height: 1.05;
@@ -335,7 +335,7 @@ section p {
 
 .rule-modal__dialog h3 {
   margin: 0 2.2rem 0.75rem 0;
-  color: var(--beetroot);
+  color: #ff692e;
   font-size: clamp(1.5rem, 3vw, 2rem);
 }
 
@@ -476,6 +476,8 @@ section p {
 .rps-heading p {
   margin-top: 0;
   margin-bottom: 1rem;
+  max-width: none;
+  white-space: nowrap;
 }
 
 .rps-scoreboard {
@@ -518,7 +520,7 @@ section p {
 .rps-arena .duel-label {
   margin-top: 0;
   margin-bottom: 0.8rem;
-  color: var(--beetroot);
+  color: #ff692e;
   font-size: 1.15rem;
 }
 
@@ -615,6 +617,16 @@ section p {
   box-shadow: 0 10px 20px rgba(141, 43, 82, 0.12);
   border: 1px solid rgba(141, 43, 82, 0.14);
   background: rgba(255, 255, 255, 0.88);
+  perspective: 900px;
+}
+
+.duel-card img {
+  backface-visibility: hidden;
+  transform-origin: center;
+}
+
+.duel-card.is-flipping img {
+  animation: duel-flip 0.42s ease-in-out;
 }
 
 .duel-card--user.is-fighting {
@@ -684,7 +696,7 @@ section p {
 
 .game-overlay__dialog h3 {
   margin: 0 0 0.5rem;
-  color: var(--beetroot);
+  color: #ff692e;
 }
 
 .game-overlay__dialog p {
@@ -768,7 +780,7 @@ section p {
 
 .folk-hero__copy h2 {
   margin: 0;
-  color: var(--beetroot);
+  color: #ff692e;
   font-size: clamp(0.98rem, 2.22vw, 1.95rem);
   line-height: 0.96;
 }
@@ -1035,7 +1047,7 @@ section p {
 
 .timeline-section__title {
   margin: 0 0 1rem;
-  color: var(--beetroot);
+  color: #ff692e;
   font-family: var(--font-title);
   font-size: clamp(1.4rem, 2.6vw, 2.2rem);
   line-height: 1.08;
@@ -1290,6 +1302,20 @@ section p {
   }
 }
 
+@keyframes duel-flip {
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  50% {
+    transform: rotateY(90deg);
+  }
+
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
 @keyframes modal-pop {
   from {
     transform: translateY(14px) scale(0.96);
@@ -1375,6 +1401,10 @@ section p {
 
   .rps-table {
     grid-template-columns: 1fr;
+  }
+
+  .rps-heading p {
+    white-space: normal;
   }
 
   .card-hand {

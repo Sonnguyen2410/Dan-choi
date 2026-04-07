@@ -252,7 +252,7 @@ function initOanTuTiGame() {
   const gameOverMessage = document.getElementById("game-over-message");
 
   const playerCards = Array.from(game.querySelectorAll(".choice-card"));
-  const cardBack = "../oan tu xi/card_back.png";
+  const cardBack = "../oan tu xi/cardback.jpg";
   const cardByChoice = {
     keo: "../oan tu xi/keo.png",
     bua: "../oan tu xi/bua.png",
@@ -273,10 +273,13 @@ function initOanTuTiGame() {
 
   const CPU_REVEAL_DELAY_MS = 600;
   const ROUND_RESET_DELAY_MS = 900;
+  const CARD_FLIP_DURATION_MS = 420;
+  const MAX_ROUNDS = 3;
 
   let playerScore = 0;
   let cpuScore = 0;
   let drawScore = 0;
+  let roundCount = 0;
   let isRoundLocked = false;
   let isGameOver = false;
 
@@ -292,6 +295,8 @@ function initOanTuTiGame() {
       img.src = cardByChoice[choice];
       btn.classList.remove("is-selected");
     });
+    duelUserWrap.classList.remove("is-flipping");
+    duelCpuWrap.classList.remove("is-flipping");
     duelUserCardEl.src = cardBack;
     duelCpuCardEl.src = cardBack;
   }
@@ -330,6 +335,22 @@ function initOanTuTiGame() {
     duelCpuWrap.classList.add("is-fighting");
   }
 
+  function flipRevealDuelCard(cardEl, wrapEl, nextSrc) {
+    wrapEl.classList.remove("is-flipping");
+    cardEl.src = cardBack;
+    void wrapEl.offsetWidth;
+
+    wrapEl.classList.add("is-flipping");
+
+    window.setTimeout(() => {
+      cardEl.src = nextSrc;
+    }, Math.floor(CARD_FLIP_DURATION_MS / 2));
+
+    window.setTimeout(() => {
+      wrapEl.classList.remove("is-flipping");
+    }, CARD_FLIP_DURATION_MS + 30);
+  }
+
   function getRoundOutcome(playerChoice, cpuChoice) {
     if (playerChoice === cpuChoice) {
       return "draw";
@@ -341,13 +362,17 @@ function initOanTuTiGame() {
   function showGameOver() {
     isGameOver = true;
     setCardsDisabled(true);
+    const completedRounds = roundCount;
 
-    if (playerScore >= 3) {
-      gameOverTitle.textContent = "Thân Hành toàn thắng!";
-      gameOverMessage.textContent = "Thân Hành đã thắng chung cuộc với 3 hiệp thắng.";
+    if (playerScore > cpuScore) {
+      gameOverTitle.textContent = "Người chơi chiến thắng!";
+      gameOverMessage.textContent = `Sau ${completedRounds} vòng, Người chơi thắng ${playerScore}-${cpuScore}.`;
+    } else if (cpuScore > playerScore) {
+      gameOverTitle.textContent = "Cao thủ dân gian chiến thắng!";
+      gameOverMessage.textContent = `Sau ${completedRounds} vòng, Cao thủ dân gian thắng ${cpuScore}-${playerScore}.`;
     } else {
-      gameOverTitle.textContent = "Lãm Du chiếm ưu thế!";
-      gameOverMessage.textContent = "Lãm Du đã thắng chung cuộc. Hãy thử lại nhé.";
+      gameOverTitle.textContent = "Hòa chung cuộc!";
+      gameOverMessage.textContent = `Sau ${completedRounds} vòng, hai bên bất phân thắng bại (${playerScore}-${cpuScore}).`;
     }
 
     overlay.hidden = false;
@@ -357,6 +382,7 @@ function initOanTuTiGame() {
     playerScore = 0;
     cpuScore = 0;
     drawScore = 0;
+    roundCount = 0;
     isRoundLocked = false;
     isGameOver = false;
     overlay.hidden = true;
@@ -366,7 +392,7 @@ function initOanTuTiGame() {
     setCardsDisabled(false);
 
     roundResultEl.textContent = "Hãy chọn thẻ để bắt đầu trận đấu.";
-    roundNoteEl.textContent = "Thân Hành cần thắng 3 hiệp để chiến thắng.";
+    roundNoteEl.textContent = `Thi đấu ${MAX_ROUNDS} vòng: ai nhiều hiệp thắng hơn sẽ thắng.`;
   }
 
   function playRound(playerChoice, selectedButton) {
@@ -378,33 +404,38 @@ function initOanTuTiGame() {
     setCardsDisabled(true);
 
     revealPlayerCards(playerChoice);
-    roundNoteEl.textContent = `Thân Hành đã chọn: ${choiceLabel[playerChoice]}. Đang chờ Lãm Du ra thẻ...`;
+    roundNoteEl.textContent = `Người chơi đã chọn: ${choiceLabel[playerChoice]}. Đang chờ Cao thủ dân gian ra thẻ...`;
 
     const cpuChoice = randomChoice();
-    duelUserCardEl.src = cardByChoice[playerChoice];
-    duelCpuCardEl.src = cardByChoice[cpuChoice];
+    flipRevealDuelCard(duelUserCardEl, duelUserWrap, cardByChoice[playerChoice]);
+    flipRevealDuelCard(duelCpuCardEl, duelCpuWrap, cardByChoice[cpuChoice]);
     selectedButton.classList.add("is-selected");
 
     runDuelAnimation();
 
     window.setTimeout(() => {
       const outcome = getRoundOutcome(playerChoice, cpuChoice);
+      roundCount += 1;
 
       if (outcome === "player") {
         playerScore += 1;
-        roundResultEl.textContent = `Thân Hành thắng hiệp này! ${choiceLabel[playerChoice]} thắng ${choiceLabel[cpuChoice]}.`;
+        roundResultEl.textContent = `Người chơi thắng vòng này! ${choiceLabel[playerChoice]} thắng ${choiceLabel[cpuChoice]}.`;
       } else if (outcome === "cpu") {
         cpuScore += 1;
-        roundResultEl.textContent = `Lãm Du thắng hiệp này! ${choiceLabel[cpuChoice]} thắng ${choiceLabel[playerChoice]}.`;
+        roundResultEl.textContent = `Cao thủ dân gian thắng vòng này! ${choiceLabel[cpuChoice]} thắng ${choiceLabel[playerChoice]}.`;
       } else {
         drawScore += 1;
-        roundResultEl.textContent = `Thức Nhận! Cả hai cùng ra ${choiceLabel[playerChoice]}.`;
+        roundResultEl.textContent = `Hòa vòng! Cả hai cùng ra ${choiceLabel[playerChoice]}.`;
       }
 
       updateScoreUI();
-      roundNoteEl.textContent = `Tỉ số hiện tại: Thân Hành ${playerScore} - ${cpuScore} Lãm Du.`;
+      roundNoteEl.textContent = `Vòng ${roundCount}/${MAX_ROUNDS} • Tỉ số: Người chơi ${playerScore} - ${cpuScore} Cao thủ dân gian.`;
 
-      if (playerScore >= 3 || cpuScore >= 3) {
+      const remainingRounds = MAX_ROUNDS - roundCount;
+      const scoreGap = Math.abs(playerScore - cpuScore);
+      const hasDecisiveWinner = scoreGap > remainingRounds;
+
+      if (roundCount >= MAX_ROUNDS || hasDecisiveWinner) {
         showGameOver();
         isRoundLocked = false;
         return;
