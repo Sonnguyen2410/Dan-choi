@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dan Gian - Luat choi</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@latest/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/style.css?v=20260407-57" />
   </head>
   <body>
     <header class="site-header">
@@ -116,7 +116,16 @@
         <p class="rule-modal__eyebrow">Mat sau the luat choi</p>
         <h3 id="rule-modal-title"></h3>
         <div class="rule-modal__media">
-          <img id="rule-modal-image" alt="" loading="lazy" />
+          <div class="rule-flip" id="rule-flip-card" hidden>
+            <div class="rule-flip__inner">
+              <div class="rule-flip__face rule-flip__face--front">
+                <img id="rule-modal-front-image" alt="" loading="lazy" />
+              </div>
+              <div class="rule-flip__face rule-flip__face--back">
+                <img id="rule-modal-back-image" alt="" loading="lazy" />
+              </div>
+            </div>
+          </div>
         </div>
         <p id="rule-modal-content" class="rule-modal__fallback" hidden></p>
       </div>
@@ -129,6 +138,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@latest/swiper-bundle.min.js"></script>
-    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/main.js?v=20260407-05"></script>
   </body>
 </html>

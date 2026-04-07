@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dan Gian - Goc tich</title>
-    <link rel="stylesheet" href="../assets/css/style.css" />
+    <title>Dan Gian - Gốc tích</title>
+    <link rel="stylesheet" href="../assets/css/style.css?v=20260407-56" />
   </head>
   <body>
     <header class="site-header">
       <div class="container">
         <h1>Dan Gian</h1>
-        <nav class="site-nav">
+        <nav class="site-nav" aria-label="Điều hướng chính">
           <a href="../index.html">Trang chủ</a>
           <a href="goc-tich.html" class="active">Gốc tích</a>
           <a href="phan-loai.html">Phân loại</a>
@@ -20,10 +20,98 @@
       </div>
     </header>
 
-    <main class="container page-main">
-      <section>
-        <h2>Gốc tích</h2>
-        <p>Đây là khung cho trang ốc tích. Bạn có thể bổ sung lịch sử và nguồn gốc tại đây.</p>
+    <main class="container page-main folk-page">
+      <section class="folk-hero folk-hero--origin">
+        <div class="folk-hero__copy">
+          <h2 class="folk-brand-title">Định nghĩa &amp; Nguồn gốc</h2>
+
+          <div class="folk-copy-card">
+            <h3 class="folk-copy-card__title">Định nghĩa</h3>
+            <p>
+              Trò chơi dân gian là một bức tranh sinh động phản chiếu các hoạt động sinh hoạt đời thường của người Việt
+              (như cấy lúa, chăn trâu, bắt cá, gánh nước). Khác với các hình thức giải trí cá nhân hiện đại, đây là
+              sản phẩm của lao động và sự sáng tạo tập thể. Nó ra đời từ nhu cầu giải trí, gắn kết cộng đồng sau những
+              giờ lao động vất vả.
+            </p>
+          </div>
+
+          <div class="folk-copy-card folk-copy-card--origin">
+            <h3 class="folk-copy-card__title">Nguồn gốc</h3>
+            <p>
+              Trò chơi dân gian là một phần cốt lõi của di sản văn hóa phi vật thể Việt Nam. Kho tàng này không có bất
+              kỳ một tác giả cụ thể nào, mà được lưu giữ và phát triển thông qua phương thức truyền miệng, trao truyền
+              từ thế hệ này sang thế hệ khác và thường được cất lên qua những câu ca dao, đồng dao nhịp nhàng.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="folk-hero__media">
+          <figure class="folk-media-card">
+            <img
+              class="folk-media-card__image"
+              src="../assets/images/mat-sau/o-an-quan.png"
+              alt="Minh họa trò Ô ăn quan"
+              loading="eager"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section class="timeline-section" aria-labelledby="timeline-title">
+        <div class="section-heading">
+          <p class="section-kicker">Dòng thời gian: Lịch sử hình thành và phát triển</p>
+        </div>
+
+        <div class="folk-timeline">
+          <div class="folk-timeline__rail" aria-hidden="true"></div>
+
+          <figure class="folk-timeline__center" aria-hidden="true">
+            <div class="folk-timeline__orb">
+              <div class="folk-timeline__orb-ring"></div>
+              <img src="../assets/images/mat-sau/choi-chuyen.png" alt="" />
+            </div>
+          </figure>
+
+          <article class="timeline-card timeline-card--left">
+            <h3 class="timeline-card__title">Giai đoạn 1 - Khởi nguồn</h3>
+            <p>
+              Trò chơi sơ khai ra đời từ các nghi lễ nông nghiệp, tín ngưỡng phồn thực và các lễ hội cầu mùa của cư dân
+              Việt cổ. Mục đích ban đầu mang đậm tính tâm linh, mong mưa thuận gió hòa, vạn vật sinh sôi.
+            </p>
+            <p class="timeline-card__example">
+              <strong>Ví dụ:</strong> Lễ hội Vua Hùng dạy dân cấy lúa (Phú Thọ) với các trò diễn xướng cấy lúa, hay các
+              trò thi nấu cơm, rước nước.
+            </p>
+          </article>
+
+          <article class="timeline-card timeline-card--right">
+            <h3 class="timeline-card__title">Giai đoạn 2 - Giao thoa</h3>
+            <p>
+              Thuận theo dòng chảy lịch sử và sự giao lưu văn hóa, trò chơi dân gian có sự phân hóa đa dạng theo đặc
+              trưng địa lý và tầng lớp xã hội. Có những trò chơi bình dân của xóm làng, nhưng cũng có những thú vui
+              chịu ảnh hưởng từ cung đình hoặc sự giao thoa văn hóa giữa các dân tộc anh em.
+            </p>
+            <p class="timeline-card__example">
+              <strong>Ví dụ:</strong> Vùng núi phía Bắc nổi bật với ném còn, đánh cù (tù lu); Đồng bằng Bắc Bộ có bịt mắt
+              bắt dê, ô ăn quan. Trong khi đó, các trò như cờ người, đầu hồ lại mang dáng dấp của sự nhã nhặn, mang tính
+              chiến lược từ chốn cung đình.
+            </p>
+          </article>
+
+          <article class="timeline-card timeline-card--left timeline-card--final">
+            <h3 class="timeline-card__title">Giai đoạn 3 - Hiện tại</h3>
+            <p>
+              Trò chơi dân gian không hề bị bỏ lại phía sau mà đang được chuyển mình mạnh mẽ. Chúng được tích hợp vào
+              môi trường giáo dục, trở thành chất liệu đắt giá cho các chiến dịch truyền thông thương hiệu, hay làm
+              điểm nhấn trong các sự kiện văn hóa, biểu diễn nghệ thuật đương đại.
+            </p>
+            <p class="timeline-card__example">
+              <strong>Ví dụ:</strong> Những buổi học trải nghiệm, chương trình lễ hội đường phố, sân khấu hóa dân gian
+              và các chiến dịch truyền thông lấy cảm hứng từ trò Ô ăn quan, kéo co, nhảy dây.
+            </p>
+          </article>
+        </div>
       </section>
     </main>
 
@@ -33,6 +121,6 @@
       </div>
     </footer>
 
-    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/main.js?v=20260407-03"></script>
   </body>
 </html>

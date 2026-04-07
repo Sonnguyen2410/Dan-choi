@@ -9,7 +9,9 @@ function initRulesCarousel() {
 
   const cards = Array.from(track.querySelectorAll(".rule-card"));
   const modalTitle = document.getElementById("rule-modal-title");
-  const modalImage = document.getElementById("rule-modal-image");
+  const modalFlipCard = document.getElementById("rule-flip-card");
+  const modalFrontImage = document.getElementById("rule-modal-front-image");
+  const modalBackImage = document.getElementById("rule-modal-back-image");
   const modalContent = document.getElementById("rule-modal-content");
   const closeTargets = modal.querySelectorAll("[data-rule-modal-close]");
   let swiper = null;
@@ -75,26 +77,38 @@ function initRulesCarousel() {
     modal.hidden = false;
     document.body.style.overflow = "hidden";
 
-    if (modalImage) {
-      modalImage.alt = `Mat sau the luat choi ${gameName}`;
+    if (modalFlipCard && modalFrontImage && modalBackImage) {
+      modalFlipCard.classList.remove("is-flipped");
+      modalFrontImage.src = cardImage ? cardImage.src : "";
+      modalFrontImage.alt = `Mat truoc the luat choi ${gameName}`;
 
       if (backImagePath) {
-        modalImage.classList.remove("is-ready");
-        modalImage.onload = () => {
-          modalImage.classList.add("is-ready");
-        };
-        modalImage.onerror = () => {
-          modalImage.classList.remove("is-ready");
-        };
-        modalImage.src = backImagePath;
-        modalImage.hidden = false;
+        modalBackImage.alt = `Mat sau the luat choi ${gameName}`;
+        modalBackImage.src = backImagePath;
+        modalFlipCard.hidden = false;
         modalContent.hidden = true;
+
+        const startFlip = () => {
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              modalFlipCard.classList.add("is-flipped");
+            });
+          });
+        };
+
+        if (modalBackImage.complete) {
+          startFlip();
+        } else {
+          modalBackImage.onload = startFlip;
+          modalBackImage.onerror = () => {
+            modalFlipCard.classList.remove("is-flipped");
+          };
+        }
 
         preloadImage(backImagePath);
       } else {
-        modalImage.removeAttribute("src");
-        modalImage.classList.remove("is-ready");
-        modalImage.hidden = true;
+        modalBackImage.removeAttribute("src");
+        modalFlipCard.hidden = true;
         modalContent.textContent = card.dataset.detail || "Chua co anh mat sau cho the nay.";
         modalContent.hidden = false;
       }
@@ -102,9 +116,15 @@ function initRulesCarousel() {
   };
 
   const closeModal = () => {
-    if (modalImage) {
-      modalImage.classList.remove("is-ready");
+    if (modalFlipCard) {
+      modalFlipCard.classList.remove("is-flipped");
     }
+
+    if (modalBackImage) {
+      modalBackImage.onload = null;
+      modalBackImage.onerror = null;
+    }
+
     modal.hidden = true;
     document.body.style.overflow = "";
   };
@@ -323,11 +343,11 @@ function initOanTuTiGame() {
     setCardsDisabled(true);
 
     if (playerScore >= 3) {
-      gameOverTitle.textContent = "Chúc mừng bạn!";
-      gameOverMessage.textContent = "Bạn đã thắng chung cuộc với 3 hiệp thắng.";
+      gameOverTitle.textContent = "Thân Hành toàn thắng!";
+      gameOverMessage.textContent = "Thân Hành đã thắng chung cuộc với 3 hiệp thắng.";
     } else {
-      gameOverTitle.textContent = "Rất tiếc!";
-      gameOverMessage.textContent = "Máy đã thắng chung cuộc. Hãy thử lại nhé.";
+      gameOverTitle.textContent = "Lãm Du chiếm ưu thế!";
+      gameOverMessage.textContent = "Lãm Du đã thắng chung cuộc. Hãy thử lại nhé.";
     }
 
     overlay.hidden = false;
@@ -346,7 +366,7 @@ function initOanTuTiGame() {
     setCardsDisabled(false);
 
     roundResultEl.textContent = "Hãy chọn thẻ để bắt đầu trận đấu.";
-    roundNoteEl.textContent = "Bạn cần thắng 3 hiệp để chiến thắng.";
+    roundNoteEl.textContent = "Thân Hành cần thắng 3 hiệp để chiến thắng.";
   }
 
   function playRound(playerChoice, selectedButton) {
@@ -358,7 +378,7 @@ function initOanTuTiGame() {
     setCardsDisabled(true);
 
     revealPlayerCards(playerChoice);
-    roundNoteEl.textContent = `Bạn đã chọn: ${choiceLabel[playerChoice]}. Đang chờ máy ra thẻ...`;
+    roundNoteEl.textContent = `Thân Hành đã chọn: ${choiceLabel[playerChoice]}. Đang chờ Lãm Du ra thẻ...`;
 
     const cpuChoice = randomChoice();
     duelUserCardEl.src = cardByChoice[playerChoice];
@@ -372,17 +392,17 @@ function initOanTuTiGame() {
 
       if (outcome === "player") {
         playerScore += 1;
-        roundResultEl.textContent = `Bạn thắng hiệp này! ${choiceLabel[playerChoice]} thắng ${choiceLabel[cpuChoice]}.`;
+        roundResultEl.textContent = `Thân Hành thắng hiệp này! ${choiceLabel[playerChoice]} thắng ${choiceLabel[cpuChoice]}.`;
       } else if (outcome === "cpu") {
         cpuScore += 1;
-        roundResultEl.textContent = `Máy thắng hiệp này! ${choiceLabel[cpuChoice]} thắng ${choiceLabel[playerChoice]}.`;
+        roundResultEl.textContent = `Lãm Du thắng hiệp này! ${choiceLabel[cpuChoice]} thắng ${choiceLabel[playerChoice]}.`;
       } else {
         drawScore += 1;
-        roundResultEl.textContent = `Hòa hiệp! Cả hai cùng ra ${choiceLabel[playerChoice]}.`;
+        roundResultEl.textContent = `Thức Nhận! Cả hai cùng ra ${choiceLabel[playerChoice]}.`;
       }
 
       updateScoreUI();
-      roundNoteEl.textContent = `Tỉ số hiện tại: Bạn ${playerScore} - ${cpuScore} Máy.`;
+      roundNoteEl.textContent = `Tỉ số hiện tại: Thân Hành ${playerScore} - ${cpuScore} Lãm Du.`;
 
       if (playerScore >= 3 || cpuScore >= 3) {
         showGameOver();
@@ -411,7 +431,68 @@ function initOanTuTiGame() {
   resetGame();
 }
 
+function initOriginTimelineHalfFlow() {
+  const timeline = document.querySelector(".folk-timeline");
+
+  if (!timeline) {
+    return;
+  }
+
+  const stage1 = timeline.querySelector(".timeline-card--left:not(.timeline-card--final)");
+  const stage2 = timeline.querySelector(".timeline-card--right");
+  const stage3 = timeline.querySelector(".timeline-card--final");
+  const center = timeline.querySelector(".folk-timeline__center");
+
+  if (!stage1 || !stage2 || !stage3) {
+    return;
+  }
+
+  const DESKTOP_BREAKPOINT = 640;
+  const FLOW_GAP_FACTOR = 0.48;
+
+  const resetLayout = () => {
+    timeline.classList.remove("is-half-flow");
+    stage2.style.marginTop = "";
+    stage3.style.marginTop = "";
+    timeline.style.minHeight = "";
+  };
+
+  const applyHalfFlow = () => {
+    if (window.innerWidth <= DESKTOP_BREAKPOINT) {
+      resetLayout();
+      return;
+    }
+
+    timeline.classList.add("is-half-flow");
+
+    const stage2Top = Math.max(18, Math.round(stage1.offsetHeight * FLOW_GAP_FACTOR));
+    const stage3Top = Math.max(18, Math.round(stage2Top + stage2.offsetHeight * FLOW_GAP_FACTOR));
+
+    stage2.style.marginTop = `${stage2Top}px`;
+    stage3.style.marginTop = `${stage3Top}px`;
+
+    const leftBottom = stage3Top + stage3.offsetHeight;
+    const rightBottom = stage2Top + stage2.offsetHeight;
+    const centerBottom = center ? center.offsetHeight : 0;
+    timeline.style.minHeight = `${Math.ceil(Math.max(leftBottom, rightBottom, centerBottom) + 8)}px`;
+  };
+
+  applyHalfFlow();
+
+  let resizeRaf = 0;
+  window.addEventListener("resize", () => {
+    if (resizeRaf) {
+      window.cancelAnimationFrame(resizeRaf);
+    }
+
+    resizeRaf = window.requestAnimationFrame(() => {
+      applyHalfFlow();
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   initRulesCarousel();
   initOanTuTiGame();
+  initOriginTimelineHalfFlow();
 });

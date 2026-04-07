@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dan Gian - Trai nghiem</title>
-    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/style.css?v=20260407-56" />
   </head>
   <body>
     <header class="site-header">
@@ -23,34 +23,34 @@
     <main class="container page-main">
       <section class="rps-section" data-rps-game>
         <div class="rps-heading">
-          <h2>Oẳn Tù Tì - Rút Thẻ Bài</h2>
-          <p>Chọn 1 thẻ. Ai thắng đủ 3 hiệp trước sẽ thắng chung cuộc.</p>
+          <h2>Trải nghiệm - Thân Hành / Lãm Du / Thức Nhận</h2>
+          <p>"Oẳn tù tì, ra cái gì, ra cái này!" Chọn 1 thẻ. Ai thắng đủ 3 hiệp trước sẽ thắng chung cuộc.</p>
         </div>
 
         <div class="rps-scoreboard" aria-live="polite">
           <div class="score-item">
-            <span>Bạn</span>
+            <span>Thân Hành</span>
             <strong id="player-score">0</strong>
           </div>
           <div class="score-item">
-            <span>Máy</span>
+            <span>Lãm Du</span>
             <strong id="cpu-score">0</strong>
           </div>
           <div class="score-item">
-            <span>Hiệp hòa</span>
+            <span>Thức Nhận</span>
             <strong id="draw-score">0</strong>
           </div>
         </div>
 
         <div class="rps-table">
           <div class="rps-arena" aria-live="polite">
-            <p class="duel-label">So găng</p>
+            <p class="duel-label">Thân Hành so tài cùng Lãm Du</p>
             <div class="duel-cards">
               <div class="duel-card duel-card--cpu" id="duel-cpu-wrap">
-                <img id="duel-cpu-card" src="../oan tu xi/card_back.png" alt="Thẻ của máy ở khu so găng" />
+                <img id="duel-cpu-card" src="../oan tu xi/card_back.png" alt="Thẻ của Lãm Du ở khu so tài" />
               </div>
               <div class="duel-card duel-card--user" id="duel-user-wrap">
-                <img id="duel-user-card" src="../oan tu xi/card_back.png" alt="Thẻ của bạn ở khu so găng" />
+                <img id="duel-user-card" src="../oan tu xi/card_back.png" alt="Thẻ của Thân Hành ở khu so tài" />
               </div>
             </div>
             <p class="round-result" id="round-result">Hãy chọn thẻ để bắt đầu trận đấu.</p>
@@ -59,7 +59,7 @@
           </div>
 
           <div class="rps-player-panel">
-            <h3>Thẻ của bạn</h3>
+            <h3>Thẻ của Thân Hành</h3>
             <div class="card-hand" id="player-hand">
               <button class="choice-card" type="button" data-choice="keo" aria-label="Chọn Kéo">
                 <img src="../oan tu xi/keo.png" alt="Thẻ Kéo" />
@@ -93,6 +93,6 @@
       </div>
     </footer>
 
-    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/main.js?v=20260407-04"></script>
   </body>
 </html>
